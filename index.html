@@ -19,7 +19,7 @@
 
   <table id="tbl">
     <thead>
-      <tr><th>順位</th><th>ニックネーム</th><th>スコア</th><th>提出時刻</th></tr>
+      <tr><th>順位</th><th>名前</th></tr>
     </thead>
     <tbody></tbody>
   </table>
@@ -61,16 +61,16 @@ async function fetchRanking(){
     });
   });
 
-  // 回数順に並べ替え
+  // 回数順に並べ替え（降順）
   const sorted = Object.entries(countMap)
     .sort((a, b) => b[1] - a[1]);
 
-  // 順位表を表示
+  // 順位表を表示（名前と回数のみ）
   const tbody = document.querySelector('#tbl tbody');
   tbody.innerHTML = '';
   sorted.forEach(([name, cnt], i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${i+1}</td><td>${name}</td><td>${cnt}</td><td>—</td>`;
+    tr.innerHTML = `<td>${i+1}</td><td>${name}</td>`;
     tbody.appendChild(tr);
   });
 
