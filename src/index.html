@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>スコアボード</title>
+<style>
+  body{font-family:system-ui,'Noto Sans JP',sans-serif;margin:16px;}
+  h1{font-size:20px;margin:0 0 12px;}
+  h2{font-size:16px;margin:16px 0 8px;}
+  table{border-collapse:collapse;width:100%}
+  th,td{border-bottom:1px solid #e5e7eb;padding:8px;text-align:left}
+  th{background:#f8fafc}
+  .muted{color:#64748b;font-size:12px}
+  ul{margin:0;padding-left:18px}
+</style>
+<body>
+  <h1>スコアボード</h1>
+  <div class="muted">自動更新: 3秒ごと</div>
+
+  <table id="tbl">
+    <thead>
+      <tr><th>順位</th><th>ニックネーム</th><th>スコア</th><th>提出時刻</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>人気（1位予想 / pick1）</h2>
+  <ul id="pop1"></ul>
+
+  <h2>人気（2位予想 / pick2）</h2>
+  <ul id="pop2"></ul>
+
+  <h2>人気（3位予想 / pick3）</h2>
+  <ul id="pop3"></ul>
+
+<script>
+const GAS_URL = "＜Apps ScriptのWebアプリURL＞";
+const RACE = "";   // 特定レースだけ表示したいなら名前を入れる（空=全件）
+const LIMIT = 20;
+
+function renderPopularity(map, ulId){
+  const ul = document.getElementById(ulId);
+  ul.innerHTML = '';
+  Object.entries(map)
+    .sort((a,b)=> b[1]-a[1])            // 回数降順
+    .forEach(([name, cnt])=>{
+      const li = document.createElement('li');
+      li.textContent = `${name}: ${cnt}`;
+      ul.appendChild(li);
+    });
+}
+
+async function fetchRanking(){
+  const url = `${GAS_URL}?fn=ranking&limit=${LIMIT}` + (RACE? `&race=${encodeURIComponent(RACE)}` : '');
+  const res = await fetch(url, { cache:'no-store' });
+  const json = await res.json();
+  if(!json.ok) return;
+
+  // 順位表
+  const tbody = document.querySelector('#tbl tbody');
+  tbody.innerHTML = '';
+  json.top.forEach((r, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i+1}</td><td>${r.nickname||'—'}</td><td>${r.score}</td><td>${r.ts}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // 人気（pick1/pick2/pick3）
+  if (json.popularity){
+    renderPopularity(json.popularity.pick1 || {}, 'pop1');
+    renderPopularity(json.popularity.pick2 || {}, 'pop2');
+    renderPopularity(json.popularity.pick3 || {}, 'pop3');
+  }
+}
+
+fetchRanking();
+setInterval(fetchRanking, 3000);
+</script>
+</body>
+</html>
