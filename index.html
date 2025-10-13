@@ -53,12 +53,24 @@ async function fetchRanking(){
   const json = await res.json();
   if(!json.ok) return;
 
-  // 順位表
+  // pick1,2,3で出てきた回数を集計
+  const countMap = {};
+  ['pick1', 'pick2', 'pick3'].forEach(key => {
+    Object.entries(json.popularity[key] || {}).forEach(([name, cnt]) => {
+      countMap[name] = (countMap[name] || 0) + cnt;
+    });
+  });
+
+  // 回数順に並べ替え
+  const sorted = Object.entries(countMap)
+    .sort((a, b) => b[1] - a[1]);
+
+  // 順位表を表示
   const tbody = document.querySelector('#tbl tbody');
   tbody.innerHTML = '';
-  json.top.forEach((r, i) => {
+  sorted.forEach(([name, cnt], i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${i+1}</td><td>${r.nickname||'—'}</td><td>${r.score}</td><td>${r.ts}</td>`;
+    tr.innerHTML = `<td>${i+1}</td><td>${name}</td><td>${cnt}</td><td>—</td>`;
     tbody.appendChild(tr);
   });
 
