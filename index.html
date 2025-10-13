@@ -35,8 +35,8 @@
 
 <script>
 const GAS_URL = "https://script.google.com/macros/s/AKfycbza70GDRzr2u4k4xAnaRL0jM_k_5gMS2w3P1d2UAijLxCv8iqdXVJSwt01uQA1Wf4Eq/exec";
-const RACE = "";   // 特定レースだけ表示したいなら名前を入れる（空=全件）
-const LIMIT = 20;
+// const RACE = "";   // 特定レースだけ表示したいなら名前を入れる（空=全件）
+// const LIMIT = 20;
 
 function renderPopularity(map, ulId){
   const ul = document.getElementById(ulId);
@@ -51,8 +51,8 @@ function renderPopularity(map, ulId){
 }
 
 async function fetchRanking(){
-  const url = `${GAS_URL}?fn=ranking&limit=${LIMIT}` + (RACE? `&race=${encodeURIComponent(RACE)}` : '');
-  const res = await fetch(url, { cache:'no-store' });
+  // const url = `${GAS_URL}?fn=ranking&limit=${LIMIT}` + (RACE? `&race=${encodeURIComponent(RACE)}` : '');
+  const res = await fetch(GAS_URL, { cache:'no-store' });
   const json = await res.json();
   if(!json.ok) return;
 
