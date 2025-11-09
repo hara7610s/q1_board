@@ -36,7 +36,7 @@
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxjl7vT0D__xcchipc7__nfW5pltwSjmnI6Dt_MZgzk8wKh3U0i_7BEK8D9ONMT0Lty/exec?fn=ranking";
 
 // 各pickの重み（得点）
-const POINTS = { pick1: 3, pick2: 2, pick3: 1 };
+const POINTS = { pick1: 1, pick2: 0.4, pick3: 0.2 };
 
 async function fetchRanking(){
   const res = await fetch(GAS_URL, { cache:'no-store' });
