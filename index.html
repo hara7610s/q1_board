@@ -5,8 +5,8 @@
 <title>スコアボード</title>
 <style>
   body{
-    background: #0b0b0c;             /* ベースの黒 */
-    color: #e6eef6;                  /* 文字色（読みやすく） */
+    background: #0b0b0c;
+    color: #e6eef6;
     font-family:system-ui,'Noto Sans JP',sans-serif;
     margin:16px;
   }
@@ -14,13 +14,12 @@
   h2{font-size:16px;margin:16px 0 8px;}
   table{border-collapse:collapse;width:100%}
   th,td{
-    border-bottom:1px solid rgba(230,238,246,0.08); /* 薄い境界線 */
+    border-bottom:1px solid rgba(230,238,246,0.08);
     padding:8px;
     text-align:left;
   }
-  th{background: rgba(230,238,246,0.03);}           /* ヘッダーの淡い差分 */
-  .muted{color:rgba(230,238,246,0.6);font-size:12px} /* 補助テキスト */
-  ul{margin:0;padding-left:18px}
+  th{background: rgba(230,238,246,0.03);}
+  .muted{color:rgba(230,238,246,0.6);font-size:12px}
 </style>
 <body>
   <h1>恵比寿1R ウェディングアニバーサリーステークス</h1>
@@ -28,64 +27,48 @@
 
   <table id="tbl">
     <thead>
-      <tr><th>順位</th><th>名前</th></tr>
+      <tr><th>順位</th><th>名前</th><th>得点</th></tr>
     </thead>
     <tbody></tbody>
   </table>
 
 <script>
-
-// GASのURL（関数名: ranking）
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxjl7vT0D__xcchipc7__nfW5pltwSjmnI6Dt_MZgzk8wKh3U0i_7BEK8D9ONMT0Lty/exec?fn=ranking";
 
-function renderPopularity(map, ulId){
-  const ul = document.getElementById(ulId);
-  ul.innerHTML = '';
-  Object.entries(map)
-    .sort((a,b)=> b[1]-a[1])            // 回数降順
-    .forEach(([name, cnt])=>{
-      const li = document.createElement('li');
-      li.textContent = `${name}: ${cnt}`;
-      ul.appendChild(li);
-    });
-}
+// 各pickの重み（得点）
+const POINTS = { pick1: 3, pick2: 2, pick3: 1 };
 
 async function fetchRanking(){
   const res = await fetch(GAS_URL, { cache:'no-store' });
   const json = await res.json();
   if(!json.ok) return;
 
-  // pick1,2,3で出てきた回数を集計
-  const countMap = {};
-
-  ['pick1', 'pick2', 'pick3'].forEach(
-    key => {
-      Object.entries(json.popularity[key] || {}).forEach(([name, cnt]) => {
-        countMap[name] = (countMap[name] || 0) + cnt;
-      });
-    }
-  )
-  ;
-
-  // 回数順に並べ替え（降順）
-  const sorted = Object.entries(countMap)
-    .sort((a, b) => b[1] - a[1]);
-
-  // 順位表を表示（名前と回数のみ）
-  const tbody = document.querySelector('#tbl tbody');
-  tbody.innerHTML = '';
-  sorted.forEach(([name, cnt], i) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${i+1}</td><td>${name}</td>`;
-    tbody.appendChild(tr);
+  // スコア集計：pick1→3点, pick2→2点, pick3→1点
+  const scoreMap = {};
+  Object.entries(POINTS).forEach(([key, weight]) => {
+    Object.entries(json.popularity[key] || {}).forEach(([name, cnt]) => {
+      scoreMap[name] = (scoreMap[name] || 0) + cnt * weight;
+    });
   });
 
-  // 人気（pick1/pick2/pick3）
-  if (json.popularity){
-    renderPopularity(json.popularity.pick1 || {}, 'pop1');
-    renderPopularity(json.popularity.pick2 || {}, 'pop2');
-    renderPopularity(json.popularity.pick3 || {}, 'pop3');
-  }
+  // 降順にソート
+  const sorted = Object.entries(scoreMap)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ja'));
+
+  // 表示
+  const tbody = document.querySelector('#tbl tbody');
+  tbody.innerHTML = '';
+  sorted.forEach(([name, score], i) => {
+    const tr = document.createElement('tr');
+    const tdRank = document.createElement('td');
+    const tdName = document.createElement('td');
+    const tdScore = document.createElement('td');
+    tdRank.textContent = i + 1;
+    tdName.textContent = name;
+    tdScore.textContent = score;
+    tr.append(tdRank, tdName, tdScore);
+    tbody.appendChild(tr);
+  });
 }
 
 fetchRanking();
