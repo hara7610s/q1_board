@@ -25,7 +25,7 @@
 
   /* 列幅を指定する例：1列目固定、2列目は残りを占有、3列目固定 */
   #tbl th:nth-child(1), #tbl td:nth-child(1) { width: 60px; text-align: center; }   /* 馬番 */
-  #tbl th:nth-child(2), #tbl td:nth-child(2) { width: 140px; }   /* 馬名（可変） */
+  #tbl th:nth-child(2), #tbl td:nth-child(2) { width: 80px; }   /* 馬名（可変） */
   #tbl th:nth-child(3), #tbl td:nth-child(3) { width: 80px; text-align: right; }   /* オッズ */
   #tbl th:nth-child(3), #tbl td:nth-child(3) { width: auto; }   /* 空の列 */
 </style>
@@ -77,7 +77,9 @@ async function fetchRanking(){
     const tdScore = document.createElement('td');
     const tdEmpty = document.createElement('td'); // 空セル
     tdRank.textContent = i + 1;
-    tdName.textContent = r.name;
+    // 馬名を全角/半角スペースで分割して2個目を表示（なければ元の名前）
+    const parts = String(r.name || '').trim().split(/[\u3000\s]+/);
+    tdName.textContent = parts[1] || r.name || '';
     tdScore.textContent = (r.newScore === Number.POSITIVE_INFINITY) ? '∞' : r.newScore.toFixed(1);
     
     // 追加：スコアが数値で10未満ならクラスを付ける
