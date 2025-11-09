@@ -51,21 +51,29 @@ async function fetchRanking(){
     });
   });
 
+  // 逆正規化：合計 / 各スコア（score が 0 のときは Infinity として扱う）
+  const entries = Object.entries(scoreMap); // [[name, score], ...]
+  const total = entries.reduce((s, [, v]) => s + v, 0);
+
+  const inv = entries
+    .map(([name, score]) => ({ name, score, newScore: score ? total / score : Number.POSITIVE_INFINITY }))
+    .sort((a, b) => b.newScore - a.newScore || a.name.localeCompare(b.name, 'ja'));
+
   // 降順にソート
-  const sorted = Object.entries(scoreMap);
+  // const sorted = Object.entries(scoreMap);
     // .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ja'));
 
   // 表示
   const tbody = document.querySelector('#tbl tbody');
   tbody.innerHTML = '';
-  sorted.forEach(([name, score], i) => {
+  inv.forEach((r, i) => {
     const tr = document.createElement('tr');
     const tdRank = document.createElement('td');
     const tdName = document.createElement('td');
     const tdScore = document.createElement('td');
     tdRank.textContent = i + 1;
-    tdName.textContent = name;
-    tdScore.textContent = score;
+    tdName.textContent = r.name;
+    tdScore.textContent = (r.newScore === Number.POSITIVE_INFINITY) ? '∞' : r.newScore.toFixed(2);
     tr.append(tdRank, tdName, tdScore);
     tbody.appendChild(tr);
   });
