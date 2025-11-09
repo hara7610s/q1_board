@@ -20,6 +20,8 @@
   }
   th{background: rgba(230,238,246,0.03);}
   .muted{color:rgba(230,238,246,0.6);font-size:12px}
+  /* スコアが10未満のときの色 */
+  .lowScore { color: #ffeb3b; } /* 色は要検討 */
 </style>
 <body>
   <h1>恵比寿1R ウェディングアニバーサリーステークス</h1>
@@ -36,7 +38,7 @@
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxjl7vT0D__xcchipc7__nfW5pltwSjmnI6Dt_MZgzk8wKh3U0i_7BEK8D9ONMT0Lty/exec?fn=ranking";
 
 // 各pickの重み（得点）
-const POINTS = { pick1: 3, pick2: 2, pick3: 1 };
+const POINTS = { pick1: 1, pick2: 0.4, pick3: 0.2 };
 
 async function fetchRanking(){
   const res = await fetch(GAS_URL, { cache:'no-store' });
@@ -59,10 +61,6 @@ async function fetchRanking(){
     .map(([name, score]) => ({ name, score, newScore: score ? total / score : Number.POSITIVE_INFINITY }))
     .sort((a, b) => b.newScore - a.newScore || a.name.localeCompare(b.name, 'ja'));
 
-  // 降順にソート
-  // const sorted = Object.entries(scoreMap);
-    // .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ja'));
-
   // 表示
   const tbody = document.querySelector('#tbl tbody');
   tbody.innerHTML = '';
@@ -74,6 +72,14 @@ async function fetchRanking(){
     tdRank.textContent = i + 1;
     tdName.textContent = r.name;
     tdScore.textContent = (r.newScore === Number.POSITIVE_INFINITY) ? '∞' : r.newScore.toFixed(2);
+    
+    // 追加：スコアが数値で10未満ならクラスを付ける
+    if (r.newScore !== Number.POSITIVE_INFINITY && r.newScore < 10) {
+      tdScore.classList.add('lowScore');
+    } else {
+      tdScore.classList.remove('lowScore');
+    }
+
     tr.append(tdRank, tdName, tdScore);
     tbody.appendChild(tr);
   });
