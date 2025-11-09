@@ -24,8 +24,8 @@
   .lowScore { color: #ff3b3b; } /* 色は要検討 */
 
   /* 列幅を指定 */
-  #tbl th:nth-child(1), #tbl td:nth-child(1) { width: 60px; text-align: center; }   /* 馬番 */
-  #tbl th:nth-child(2), #tbl td:nth-child(2) { width: 120px; }   /* 馬名（可変） */
+  #tbl th:nth-child(1), #tbl td:nth-child(1) { width: 40px; text-align: center; }   /* 馬番 */
+  #tbl th:nth-child(2), #tbl td:nth-child(2) { width: 80px; }   /* 馬名（可変） */
   #tbl th:nth-child(3), #tbl td:nth-child(3) { width: 80px; text-align: right; }   /* オッズ */
   #tbl th:nth-child(4), #tbl td:nth-child(4) { width: auto; }   /* 空の列 */
 </style>
@@ -91,22 +91,22 @@ async function fetchRanking(){
 
     // 順位ごとの背景色と文字色を個別指定（1〜7位）
     const rankBgs = [
-      '#e6eef6', // 1位 背景
-      '#c0c0c0', // 2位
-      '#cd7f32', // 3位
-      '#0f1720', // 4位
-      '#081018', // 5位
-      '#0b2430', // 6位
-      '#102430'  // 7位
+      '#e6eef6', // 1_白
+      '#000000', // 2_黒
+      '#ff0000', // 3_赤
+      '#0000ff', // 4_青
+      '#ffff00', // 5_黄
+      '#00ff00', // 6_緑
+      '#ff8000'  // 7_橙
     ];
     const rankFgs = [
-      '#000000', // 1位 文字色（黒）
-      '#000000', // 2位
-      '#ffffff', // 3位
-      '#e6eef6', // 4位
-      '#e6eef6', // 5位
-      '#e6eef6', // 6位
-      '#e6eef6'  // 7位
+      '#000000', // 1_黒
+      '#ffffff', // 2_白
+      '#ffffff', // 3_白
+      '#ffffff', // 4_白
+      '#000000', // 5位
+      '#ffffff', // 6位
+      '#ffffff'  // 7位
     ];
     if (i < rankBgs.length) {
       tdRank.style.background = rankBgs[i];
