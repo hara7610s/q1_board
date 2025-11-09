@@ -66,10 +66,8 @@ async function fetchRanking(){
   tbody.innerHTML = '';
   inv.forEach((r, i) => {
     const tr = document.createElement('tr');
-    const tdRank = document.createElement('td');
     const tdName = document.createElement('td');
     const tdScore = document.createElement('td');
-    tdRank.textContent = i + 1;
     tdName.textContent = r.name;
     tdScore.textContent = (r.newScore === Number.POSITIVE_INFINITY) ? '∞' : r.newScore.toFixed(2);
     
@@ -80,7 +78,7 @@ async function fetchRanking(){
       tdScore.classList.remove('lowScore');
     }
 
-    tr.append(tdRank, tdName, tdScore);
+    tr.append(tdName, tdScore);
     tbody.appendChild(tr);
   });
 }
