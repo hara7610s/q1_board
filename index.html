@@ -4,13 +4,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>スコアボード</title>
 <style>
-  body{font-family:system-ui,'Noto Sans JP',sans-serif;margin:16px;}
+  body{
+    background: #0b0b0c;             /* ベースの黒 */
+    color: #e6eef6;                  /* 文字色（読みやすく） */
+    font-family:system-ui,'Noto Sans JP',sans-serif;
+    margin:16px;
+  }
   h1{font-size:20px;margin:0 0 12px;}
   h2{font-size:16px;margin:16px 0 8px;}
   table{border-collapse:collapse;width:100%}
-  th,td{border-bottom:1px solid #e5e7eb;padding:8px;text-align:left}
-  th{background:#f8fafc}
-  .muted{color:#64748b;font-size:12px}
+  th,td{
+    border-bottom:1px solid rgba(230,238,246,0.08); /* 薄い境界線 */
+    padding:8px;
+    text-align:left;
+  }
+  th{background: rgba(230,238,246,0.03);}           /* ヘッダーの淡い差分 */
+  .muted{color:rgba(230,238,246,0.6);font-size:12px} /* 補助テキスト */
   ul{margin:0;padding-left:18px}
 </style>
 <body>
@@ -34,6 +43,8 @@
   <ul id="pop3"></ul>
 
 <script>
+
+// GASのURL（関数名: ranking）
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxjl7vT0D__xcchipc7__nfW5pltwSjmnI6Dt_MZgzk8wKh3U0i_7BEK8D9ONMT0Lty/exec?fn=ranking";
 
 function renderPopularity(map, ulId){
@@ -55,11 +66,15 @@ async function fetchRanking(){
 
   // pick1,2,3で出てきた回数を集計
   const countMap = {};
-  ['pick1', 'pick2', 'pick3'].forEach(key => {
-    Object.entries(json.popularity[key] || {}).forEach(([name, cnt]) => {
-      countMap[name] = (countMap[name] || 0) + cnt;
-    });
-  });
+
+  ['pick1', 'pick2', 'pick3'].forEach(
+    key => {
+      Object.entries(json.popularity[key] || {}).forEach(([name, cnt]) => {
+        countMap[name] = (countMap[name] || 0) + cnt;
+      });
+    }
+  )
+  ;
 
   // 回数順に並べ替え（降順）
   const sorted = Object.entries(countMap)
