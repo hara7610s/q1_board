@@ -29,7 +29,7 @@
 
   <table id="tbl">
     <thead>
-      <tr><th>順位</th><th>名前</th><th>得点</th></tr>
+      <tr><th>順位</th><th>馬名</th><th>オッズ</th></tr>
     </thead>
     <tbody></tbody>
   </table>
@@ -59,7 +59,7 @@ async function fetchRanking(){
 
   const inv = entries
     .map(([name, score]) => ({ name, score, newScore: score ? total / score : Number.POSITIVE_INFINITY }))
-    .sort((a, b) => b.newScore - a.newScore || a.name.localeCompare(b.name, 'ja'));
+    .sort((a, b) => a.name.localeCompare(b.name, 'ja', { sensitivity: 'base' }));
 
   // 表示
   const tbody = document.querySelector('#tbl tbody');
