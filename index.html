@@ -82,11 +82,38 @@ async function fetchRanking(){
     tdName.textContent = parts[1] || r.name || '';
     tdScore.textContent = (r.newScore === Number.POSITIVE_INFINITY) ? '∞' : r.newScore.toFixed(1);
     
-    // 追加：スコアが数値で10未満ならクラスを付ける
+    // スコアが数値で10未満ならオッズを赤文字で表示
     if (r.newScore !== Number.POSITIVE_INFINITY && r.newScore < 10) {
       tdScore.classList.add('lowScore');
     } else {
       tdScore.classList.remove('lowScore');
+    }
+
+    // 順位ごとの背景色と文字色を個別指定（1〜7位）
+    const rankBgs = [
+      '#e6eef6', // 1位 背景
+      '#c0c0c0', // 2位
+      '#cd7f32', // 3位
+      '#0f1720', // 4位
+      '#081018', // 5位
+      '#0b2430', // 6位
+      '#102430'  // 7位
+    ];
+    const rankFgs = [
+      '#000000', // 1位 文字色（黒）
+      '#000000', // 2位
+      '#ffffff', // 3位
+      '#e6eef6', // 4位
+      '#e6eef6', // 5位
+      '#e6eef6', // 6位
+      '#e6eef6'  // 7位
+    ];
+    if (i < rankBgs.length) {
+      tdRank.style.background = rankBgs[i];
+      tdRank.style.color = rankFgs[i];
+    } else {
+      tdRank.style.background = '';
+      tdRank.style.color = '';
     }
 
     tr.append(tdRank, tdName, tdScore, tdEmpty);
