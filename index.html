@@ -25,8 +25,8 @@
 
   /* 列幅を指定 */
   #tbl th:nth-child(1), #tbl td:nth-child(1) { width: 40px; text-align: center; }   /* 馬番 */
-  #tbl th:nth-child(2), #tbl td:nth-child(2) { width: 80px; }   /* 馬名（可変） */
-  #tbl th:nth-child(3), #tbl td:nth-child(3) { width: 80px; text-align: right; }   /* オッズ */
+  #tbl th:nth-child(2), #tbl td:nth-child(2) { width: 120px; }   /* 馬名（可変） */
+  #tbl th:nth-child(3), #tbl td:nth-child(3) { width: 60px; text-align: right; }   /* オッズ */
   #tbl th:nth-child(4), #tbl td:nth-child(4) { width: auto; }   /* 空の列 */
 </style>
 <body>
@@ -96,8 +96,8 @@ async function fetchRanking(){
       '#ff0000', // 3_赤
       '#0000ff', // 4_青
       '#ffff00', // 5_黄
-      '#00ff00', // 6_緑
-      '#ff8000'  // 7_橙
+      '#008000', // 6_緑
+      '#ffa500'  // 7_橙
     ];
     const rankFgs = [
       '#000000', // 1_黒
