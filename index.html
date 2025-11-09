@@ -26,7 +26,8 @@
   /* 列幅を指定する例：1列目固定、2列目は残りを占有、3列目固定 */
   #tbl th:nth-child(1), #tbl td:nth-child(1) { width: 60px; text-align: center; }   /* 馬番 */
   #tbl th:nth-child(2), #tbl td:nth-child(2) { width: 140px; }   /* 馬名（可変） */
-  #tbl th:nth-child(3), #tbl td:nth-child(3) { width: auto; text-align: right; }   /* オッズ */
+  #tbl th:nth-child(3), #tbl td:nth-child(3) { width: 80px; text-align: right; }   /* オッズ */
+  #tbl th:nth-child(3), #tbl td:nth-child(3) { width: auto; }   /* 空の列 */
 </style>
 <body>
   <h1>恵比寿1R ウェディングアニバーサリーステークス</h1>
@@ -34,7 +35,7 @@
 
   <table id="tbl">
     <thead>
-      <tr><th>馬番</th><th>馬名</th><th>オッズ</th></tr>
+      <tr><th>馬番</th><th>馬名</th><th>オッズ</th><th></th></tr>
     </thead>
     <tbody></tbody>
   </table>
@@ -74,9 +75,10 @@ async function fetchRanking(){
     const tdRank = document.createElement('td');
     const tdName = document.createElement('td');
     const tdScore = document.createElement('td');
+    const tdEmpty = document.createElement('td'); // 空セル
     tdRank.textContent = i + 1;
     tdName.textContent = r.name;
-    tdScore.textContent = (r.newScore === Number.POSITIVE_INFINITY) ? '∞' : r.newScore.toFixed(2);
+    tdScore.textContent = (r.newScore === Number.POSITIVE_INFINITY) ? '∞' : r.newScore.toFixed(1);
     
     // 追加：スコアが数値で10未満ならクラスを付ける
     if (r.newScore !== Number.POSITIVE_INFINITY && r.newScore < 10) {
@@ -85,7 +87,7 @@ async function fetchRanking(){
       tdScore.classList.remove('lowScore');
     }
 
-    tr.append(tdRank, tdName, tdScore);
+    tr.append(tdRank, tdName, tdScore, tdEmpty);
     tbody.appendChild(tr);
   });
 }
