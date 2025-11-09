@@ -21,7 +21,7 @@
   th{background: rgba(230,238,246,0.03);}
   .muted{color:rgba(230,238,246,0.6);font-size:12px}
   /* スコアが10未満のときの色 */
-  .lowScore { color: #ffeb3b; } /* 色は要検討 */
+  .lowScore { color: #ff3b3b; } /* 色は要検討 */
 </style>
 <body>
   <h1>恵比寿1R ウェディングアニバーサリーステークス</h1>
@@ -29,7 +29,7 @@
 
   <table id="tbl">
     <thead>
-      <tr><th>馬番　馬名</th><th>オッズ</th></tr>
+      <tr><th>馬番</th><th>馬名</th><th>オッズ</th></tr>
     </thead>
     <tbody></tbody>
   </table>
@@ -66,8 +66,10 @@ async function fetchRanking(){
   tbody.innerHTML = '';
   inv.forEach((r, i) => {
     const tr = document.createElement('tr');
+    const tdRank = document.createElement('td');
     const tdName = document.createElement('td');
     const tdScore = document.createElement('td');
+    tdRank.textContent = i + 1;
     tdName.textContent = r.name;
     tdScore.textContent = (r.newScore === Number.POSITIVE_INFINITY) ? '∞' : r.newScore.toFixed(2);
     
@@ -78,7 +80,7 @@ async function fetchRanking(){
       tdScore.classList.remove('lowScore');
     }
 
-    tr.append(tdName, tdScore);
+    tr.append(tdRank, tdName, tdScore);
     tbody.appendChild(tr);
   });
 }
