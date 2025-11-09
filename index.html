@@ -23,13 +23,10 @@
   /* スコアが10未満のときの色 */
   .lowScore { color: #ff3b3b; } /* 色は要検討 */
 
-  /* 空セルを詰める */
-  td:empty {
-    padding: 0;
-    width: 0;
-    max-width: 0;
-    white-space: nowrap;
-  }
+  /* 列幅を指定する例：1列目固定、2列目は残りを占有、3列目固定 */
+  #tbl th:nth-child(1), #tbl td:nth-child(1) { width: 60px; }   /* 馬番 */
+  #tbl th:nth-child(2), #tbl td:nth-child(2) { width: auto; }   /* 馬名（可変） */
+  #tbl th:nth-child(3), #tbl td:nth-child(3) { width: 80px; }   /* オッズ */
 </style>
 <body>
   <h1>恵比寿1R ウェディングアニバーサリーステークス</h1>
