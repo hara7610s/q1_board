@@ -119,7 +119,7 @@
 
       const inv = entries
         .map(([name, score]) => ({ name, score, newScore: score ? total / score : Number.POSITIVE_INFINITY }))
-        .sort((a, b) => a.name.localeCompare(b.name, 'ja', { sensitivity: 'base' }));
+        .sort((a, b) => a.newScore - b.newScore);
 
       // 表示
       const tbody = document.querySelector('#tbl tbody');
