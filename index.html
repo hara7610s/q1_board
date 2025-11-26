@@ -143,7 +143,7 @@
           tdScore.classList.remove('lowScore');
         }
 
-        // 順位ごとの背景色と文字色を個別指定（1〜7位）
+        // 馬番ごとの背景色と文字色を個別指定（1〜8枠）
         const rankBgs = [
           '#FFFFFF', // 1_白
           '#222222', // 2_黒
@@ -151,20 +151,24 @@
           '#005BAC', // 4_青
           '#FFD700', // 5_黄
           '#00883E', // 6_緑
-          '#F39800'  // 7_橙
+          '#F39800', // 7_橙
+          '#F4B3C2'  // 8_桃
         ];
         const rankFgs = [
           '#000000', // 1_黒
           '#ffffff', // 2_白
           '#ffffff', // 3_白
           '#ffffff', // 4_白
-          '#000000', // 5位
-          '#ffffff', // 6位
-          '#ffffff'  // 7位
+          '#000000', // 5_黒
+          '#ffffff', // 6_白
+          '#ffffff', // 7_白
+          '#000000'  // 8_黒
         ];
-        if (i < rankBgs.length) {
-          tdRank.style.background = rankBgs[i];
-          tdRank.style.color = rankFgs[i];
+        // 馬番を数値として取得
+        const umabanNum = parseInt(parts[0], 10);
+        if (!isNaN(umabanNum) && umabanNum >= 1 && umabanNum <= rankBgs.length) {
+          tdRank.style.background = rankBgs[umabanNum - 1];
+          tdRank.style.color = rankFgs[umabanNum - 1];
         } else {
           tdRank.style.background = '';
           tdRank.style.color = '';
