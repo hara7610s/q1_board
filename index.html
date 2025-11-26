@@ -132,7 +132,7 @@
         const tdEmpty = document.createElement('td'); // 空セル
         // 馬名を全角/半角スペースで分割して、1個目を馬番、2個目を馬名として表示
         const parts = String(r.name || '').trim().split(/[\u3000\s]+/);
-        tdRank.textContent = parts[0] || (i + 1);
+        tdRank.textContent = parts[0] || i;
         tdName.textContent = parts[1] || r.name || '';
         tdScore.textContent = (r.newScore === Number.POSITIVE_INFINITY) ? '∞' : r.newScore.toFixed(1);
 
