@@ -5,49 +5,71 @@
 <title>スコアボード</title>
 <style>
   body {
-    background: #0b0b0c;
-    color: #e6eef6;
-    font-family: system-ui, 'Noto Sans JP', sans-serif;
+    background-color: #000;
+    /* LEDドットパターンのシミュレーション */
+    background-image:
+      radial-gradient(circle, #333 1px, transparent 1px);
+    background-size: 4px 4px;
+    color: #ffb800;
+    /* アンバー色 */
+    font-family: 'Courier New', monospace;
+    /* 等幅フォント */
     margin: 16px;
+    text-shadow: 0 0 4px rgba(255, 184, 0, 0.8);
+    /* 発光表現 */
   }
 
   h1 {
-    font-size: 20px;
-    margin: 0 0 12px;
+    font-size: 24px;
+    margin: 0 0 16px;
+    color: #00ff00;
+    /* タイトルは緑 */
+    text-shadow: 0 0 4px rgba(0, 255, 0, 0.8);
+    text-align: center;
+    border: 2px solid #00ff00;
+    padding: 8px;
+    background: rgba(0, 50, 0, 0.5);
   }
 
   h2 {
-    font-size: 16px;
+    font-size: 18px;
     margin: 16px 0 8px;
   }
 
   table {
-    border-collapse: collapse;
-    width: 100%
+    border-collapse: separate;
+    border-spacing: 0 4px;
+    /* 行間を少し空ける */
+    width: 100%;
   }
 
   th,
   td {
-    border-bottom: 1px solid rgba(230, 238, 246, 0.08);
+    border-bottom: 1px dashed #444;
     padding: 8px;
     text-align: left;
+    vertical-align: middle;
   }
 
   th {
-    background: rgba(230, 238, 246, 0.03);
+    background: transparent;
+    color: #00ff00;
+    text-shadow: 0 0 4px rgba(0, 255, 0, 0.8);
+    border-bottom: 2px solid #00ff00;
   }
 
   .muted {
-    color: rgba(230, 238, 246, 0.6);
-    font-size: 12px
+    color: #008800;
+    font-size: 12px;
+    text-align: right;
+    margin-bottom: 8px;
   }
 
   /* スコアが10未満のときの色 */
   .lowScore {
     color: #ff3b3b;
+    text-shadow: 0 0 4px rgba(255, 59, 59, 0.8);
   }
-
-  /* 色は要検討 */
 
   /* 列幅を指定 */
   #tbl th:nth-child(1),
