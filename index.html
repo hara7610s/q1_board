@@ -70,32 +70,34 @@
   }
 
   /* 列幅を指定 */
+
+  /* 馬番 */
   #tbl th:nth-child(1),
   #tbl td:nth-child(1) {
     width: 40px;
     text-align: center;
+    font-weight: bold;
   }
 
-  /* 馬番 */
+  /* 馬名（可変） */
   #tbl th:nth-child(2),
   #tbl td:nth-child(2) {
     width: 120px;
   }
 
-  /* 馬名（可変） */
+  /* オッズ */
   #tbl th:nth-child(3),
   #tbl td:nth-child(3) {
     width: 60px;
     text-align: right;
+    font-weight: bold;
   }
 
-  /* オッズ */
+  /* 空の列 */
   #tbl th:nth-child(4),
   #tbl td:nth-child(4) {
     width: auto;
   }
-
-  /* 空の列 */
 </style>
 
 <body>
